@@ -1,3 +1,5 @@
 # React-Learning-Series
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/web-platform-haunlu)
+Hey,
+
+This is the React Series in which I will cover Basic of React js.
