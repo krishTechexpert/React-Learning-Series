@@ -1,7 +1,7 @@
 const root = document.getElementById('root');
 
 //const element = React.createElement('div',{className:'text',children:'hello kk'});
-export const Person = ({ firstName, lastName = 'kumar' }) => {
+export const Person = ({ firstName, lastName }) => {
   return (
     <div>
       hello {firstName} {lastName}
@@ -20,12 +20,12 @@ export const Person = ({ firstName, lastName = 'kumar' }) => {
 // };
 
 Person.propTypes = {
-  firstName: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired, 
   lastName: PropTypes.string.isRequired,
 };
 
 console.log(Person.propTypes);
 
-const element = <Person firstName={false} />;
+const element = <Person firstName="Ros" lastName="mark" />;
 
 ReactDOM.render(element, root);
