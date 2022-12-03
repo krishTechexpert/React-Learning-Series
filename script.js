@@ -1,15 +1,32 @@
 const root = document.getElementById('root');
 
-function Box({className,children,style}){
-  return <div className={`box ${className}`}  style={{...style,fontStyle:'italic'}} >{children} lightbox</div>
+let state = { count: 0, username: '' };
+
+function handleClick() {
+  state = {  ...state,count: state.count + 1 };
+  render();
 }
 
-const element = (
-  <>
-<Box  className="box--small" children="small" style={{backgroundColor:'pink'}}/>
-<Box  className="box--md" children="medium" style={{backgroundColor:'blue',color:'#fff'}}/>
-<Box  className="box--lg"  style={{backgroundColor:'#000',color:'#fff'}}>Large</Box>
-</>
-);
+function handleChange(event){
+  state={...state,username:event.target.value}
+  render()
+}
 
-ReactDOM.render(element, root);
+function App() {
+  console.log(state)
+  return (
+    <>
+      <h1>Basic event handler without using hooks</h1>
+      <p>you have clicked {state.count} times</p>
+      <button onClick={handleClick}>Click me!</button>
+      <p>hello {state.username}</p>
+      <input type="text" onChange={(e) =>handleChange(e)} />
+    </>
+  );
+}
+
+function render() {
+  ReactDOM.render(<App />, root);
+}
+
+render();

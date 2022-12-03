@@ -13,21 +13,4 @@ main {
   padding: 1rem;
 }
 
-.box {
-  border: 1px solid #ddd;
-  height: 60px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.box--small {
-  width: 200px;
-}
-.box--md {
-  width: 250px;
-}
-.box--lg {
-  width: 300px;
-}
