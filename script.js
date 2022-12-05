@@ -1,32 +1,164 @@
 const root = document.getElementById('root');
 
-let state = { count: 0, username: '' };
+const initialValue = {
+  firstName: '',
+  lastName: '',
+  isChecked: false,
+};
 
-function handleClick() {
-  state = {  ...state,count: state.count + 1 };
-  render();
-}
-
-function handleChange(event){
-  state={...state,username:event.target.value}
-  render()
-}
+// way-1: good Approach
 
 function App() {
-  console.log(state)
+  const [person,setPerson] =React.useState(
+    //JSON.parse(window.localStorage.getItem('PERSON')) || '' // this will rendered each time to check localstorage object when state updated
+
+    // solution is to used lazy initializer ( that is used arrow function) inside useState hooks which runs only first time
+
+    () => {
+      console.log('hello')
+      return JSON.parse(window.localStorage.getItem('PERSON')) || ''
+    }
+
+ //save lots of code like that see way-2 example below
+ // // place first to fetch value from local storage
+//   React.useEffect(() => {
+//     const items = JSON.parse(localStorage.getItem('PERSON'))
+//   console.log("final",items)
+//   if(items){
+//     setPerson(items)
+//   }
+//   },[])
+
+  )
+
+console.log('rendered')
+  const inputHandler = (e) => {
+     let myName= e.target.name;
+     let val = e.target.value;
+
+      setPerson(prevState => ({
+        ...prevState,
+        [myName]:val
+      }))
+  }
+
+const checkInputHandler = (e) => {
+  setPerson(prevState => ({
+    ...prevState,
+    isChecked:e.target.checked
+  }))
+}
+
+
+
+React.useEffect(() =>{
+  console.log('useEffect rendered...')
+  window.localStorage.setItem('PERSON',JSON.stringify(person))
+},[person]) // when any value of person updated this useEffect runs
+
+  const {firstName,lastName,isChecked} = person;
+
   return (
-    <>
-      <h1>Basic event handler without using hooks</h1>
-      <p>you have clicked {state.count} times</p>
-      <button onClick={handleClick}>Click me!</button>
-      <p>hello {state.username}</p>
-      <input type="text" onChange={(e) =>handleChange(e)} />
+        <>
+
+      <h1>manage State using useState hooks</h1>
+      <p>hello, {firstName || lastName?<strong>{firstName} {lastName}</strong>:'please type here'}</p>
+      <form>
+       <label>FirstName: <input value={firstName} name="firstName" onChange={(e) =>inputHandler(e)}  type="text" /></label><br/>
+       <label>LastName: <input value={lastName} name="lastName" onChange={(e) =>inputHandler(e)} type="text" /></label><br />
+       <label><input type="checkbox" checked={isChecked}  onChange={(e) =>checkInputHandler(e)}   /> remember me </label><br />
+       </form>
     </>
   );
 }
 
-function render() {
-  ReactDOM.render(<App />, root);
-}
+// way-2
 
-render();
+// function App() {
+//   const [person, setPerson] = React.useState(initialValue);
+
+//   const inputHandler = (e) => {
+//     let myName = e.target.name;
+//     let val = e.target.value;
+
+//     setPerson((prevState) => ({
+//       ...prevState,
+//       [myName]: val,
+//     }));
+//   };
+
+//   const checkInputHandler = (e) => {
+//     setPerson((prevState) => ({
+//       ...prevState,
+//       isChecked: e.target.checked,
+//     }));
+//   };
+
+// // place first to fetch value from local storage
+//   React.useEffect(() => {
+//     const items = JSON.parse(localStorage.getItem('PERSON'))
+//   console.log("final",items)
+//   if(items){
+//     setPerson(items)
+//   }
+//   },[])
+
+//   React.useEffect(() => {
+//     console.log('useEffect rendered...');
+//     localStorage.setItem('PERSON', JSON.stringify(person));
+//   }, [person]);
+
+ 
+
+//   const { firstName, lastName, isChecked } = person;
+
+//   return (
+//     <>
+//       <h1>manage State using useState hooks</h1>
+//       <p>
+//         hello 
+//         {firstName || lastName ? (
+//           <strong>
+//             {firstName} 
+//             {lastName}
+//           </strong>
+//         ) : (
+//           'please type here'
+//         )}
+//       </p>
+//       <form>
+//         <label>
+//           FirstName:{' '}
+//           <input
+//             value={firstName}
+//             name="firstName"
+//             onChange={(e) => inputHandler(e)}
+//             type="text"
+//           />
+//         </label>
+//         <br />
+//         <label>
+//           LastName:{' '}
+//           <input
+//             value={lastName}
+//             name="lastName"
+//             onChange={(e) => inputHandler(e)}
+//             type="text"
+//           />
+//         </label>
+//         <br />
+//         <label>
+//           <input
+//             type="checkbox"
+//             checked={isChecked}
+//             onChange={(e) => checkInputHandler(e)}
+//           />{' '}
+//           remember me{' '}
+//         </label>
+//         <br />
+//       </form>
+//     </>
+//   );
+// }
+
+ReactDOM.render(<App />, root);
